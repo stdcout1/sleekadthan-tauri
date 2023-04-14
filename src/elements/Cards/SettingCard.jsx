@@ -25,6 +25,9 @@ const SettingCard = (props) => {
         <Typography className = "flex-col place-items-center space-y-3">
           <SoundControl name = 'Fajr' data = {props.data}></SoundControl>
           <SoundControl name = 'Duhur' data = {props.data}></SoundControl>
+          <SoundControl name = 'Asr' data = {props.data}></SoundControl>
+          <SoundControl name = 'Maghrib' data = {props.data}></SoundControl>
+          <SoundControl name = 'Isha' data = {props.data}></SoundControl>
         </Typography>
       </CardBody>
     </Card>

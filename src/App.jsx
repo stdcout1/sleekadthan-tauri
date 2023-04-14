@@ -117,7 +117,7 @@ function App() {
 	}, [])
 
   return (
-    <div className="flex-col space-y-10 mt-20 border-2">
+    <div className="flex-col space-y-10 mt-20">
       <div className="row">
         <Logo></Logo>
       </div>
