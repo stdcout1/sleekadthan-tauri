@@ -1,7 +1,8 @@
-# Tauri + React
+# A sleek adthan player for Mac, Linux and Windows.
+A fully rewritten sleek adthan player for all platforms. Uses the rust backend to safley make HTTP requests. Pretty front end to change settings.
 
-This template should help get you started developing with Tauri and React in Vite.
+## How to Install
 
-## Recommended IDE Setup
+~~Go to releases, download and run. ~~
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+Currently not released
