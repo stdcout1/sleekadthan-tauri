@@ -12,7 +12,7 @@ const SoundControl = (props) => {
     const handleClick = () => {
         const newnewid = newId>1? 0: newId+1
         setNewId(newnewid)
-        console.log(props.data[props.name])
+        props.mainclick()
         // TODO: Save settings
         //first open data
         //if does not exist make a sample
