@@ -3,6 +3,6 @@ A fully rewritten sleek adthan player for all platforms. Uses the rust backend t
 
 ## How to Install
 
-~~Go to releases, download and run. ~~
+~~Go to releases, download and run.~~
 
 Currently not released
