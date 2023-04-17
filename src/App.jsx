@@ -12,12 +12,6 @@ function App() {
   const [name, setName] = useState(""); 
   const [prayertimesobj, setPrayertimesobj] = useState({});
   const path = "settings.json"
-  
-  const playstates = [
-    "full notify",
-    "no audio",
-    "full silent"
-  ]
 
   const [data, setData] = useState({
     'Fajr': 0,
@@ -62,7 +56,6 @@ function App() {
       const prayertime =  new Date(today.toISOString().split('T')[0] + 'T' + jsonprayertimeobject[prayer]+':00'+'Z');
       if (adthanplayer.paused=== true && prayertime.getTime() === today.getTime())
       {
-        //TODO: check for settings -> ensure that settings are followed
         if (data[prayer] == 0) { 
           sendNotification('It is ' + prayer + ' time');
           adthanplayer.play()
