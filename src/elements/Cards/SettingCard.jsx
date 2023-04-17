@@ -1,16 +1,10 @@
 import React from 'react'
 import SoundControl from '../SoundControl/SoundControl'
 import {
-    Card,
-    CardHeader,
-    CardBody,
-    CardFooter,
-    Typography,
-    Checkbox,
-    Button,
-    Switch,
-    IconButton
-  } from "@material-tailwind/react"
+  Card,
+  CardHeader,
+  CardBody, Typography
+} from "@material-tailwind/react"
 
 const SettingCard = (props) => {
   return (
@@ -23,11 +17,11 @@ const SettingCard = (props) => {
           Adthan Sounds
         </Typography>
         <Typography className = "flex-col place-items-center space-y-3">
-          <SoundControl name = 'Fajr' data = {props.data}></SoundControl>
-          <SoundControl name = 'Duhur' data = {props.data}></SoundControl>
-          <SoundControl name = 'Asr' data = {props.data}></SoundControl>
-          <SoundControl name = 'Maghrib' data = {props.data}></SoundControl>
-          <SoundControl name = 'Isha' data = {props.data}></SoundControl>
+          <SoundControl name = 'Fajr' data = {props.data} setData = {props.setData} update_function = {props.update_function}></SoundControl>
+          <SoundControl name = 'Duhur' data = {props.data} setData = {props.setData} update_function = {props.update_function}></SoundControl>
+          <SoundControl name = 'Asr' data = {props.data} setData = {props.setData} update_function = {props.update_function}></SoundControl>
+          <SoundControl name = 'Maghrib' data = {props.data} setData = {props.setData} update_function = {props.update_function}></SoundControl>
+          <SoundControl name = 'Isha' data = {props.data} setData = {props.setData} update_function = {props.update_function}></SoundControl>
         </Typography>
       </CardBody>
     </Card>

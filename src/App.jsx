@@ -1,26 +1,31 @@
-import { useState, useEffect } from "react";
-import { invoke } from "@tauri-apps/api/tauri";
-import "./App.css";
-import Logo from "./elements/Logo/Logo.jsx";
-import SettingCard from "./elements/Cards/SettingCard";
+import { BaseDirectory, readTextFile, writeTextFile } from "@tauri-apps/api/fs";
 import { isPermissionGranted, requestPermission, sendNotification } from '@tauri-apps/api/notification';
+import { invoke } from "@tauri-apps/api/tauri";
+import { useEffect, useState } from "react";
+import "./App.css";
 import adthan from "./assets/normal adthan.wav";
-import {listen} from "@tauri-apps/api/event"
-import {BaseDirectory, createDir, exists, writeFile} from "@tauri-apps/api/fs"
+import SettingCard from "./elements/Cards/SettingCard";
+import Logo from "./elements/Logo/Logo.jsx";
 
 function App() {
   const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
+  const [name, setName] = useState(""); 
   const [prayertimesobj, setPrayertimesobj] = useState({});
-
+  const path = "settings.json"
   
-  let data = {
+  const playstates = [
+    "full notify",
+    "no audio",
+    "full silent"
+  ]
+
+  const [data, setData] = useState({
     'Fajr': 0,
     'Duhur': 1,
     'Asr': 2,
     'Maghrib': 0,
     'Isha' : 1
-  }
+  })
 
   const adthanplayer = new Audio(adthan)
 
@@ -32,51 +37,24 @@ function App() {
       permissionGranted = permission === 'granted';
     }
   }
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-    setGreetMsg(await invoke("greet", { name }));
-  }
   async function update() {
     return await invoke("update");
   }
-  async function start() {
-    await invoke("start");
-  }
-  async function stop() {
-    await invoke("stop");
-  }
 
-  const InitiateData = async (stuff) => 
+
+  const InitiateData = async () => 
     {
-      if (await exists('sleekadthan\\settings.json', {dir: BaseDirectory.AppData}))
-      {
-        console.log('im esxist')
-        try { // if exists import settings
-            const readdata = await readTextFile('sleekadthan\\settings.json', {dir: BaseDirectory.AppData})
-            data = JSON.parse(readdata);
-          } catch (e) {
-            console.log(e);
-          }
-      }
-      else 
-      {
-        console.log("i dont exists")
-        try {
-          await createDir("sleekadthan", {
-              dir: BaseDirectory.AppData,
-              recursive: true,
-              });
-          
-          await writeFile(
-              "/sleekadthan/", 
-              JSON.stringify(notifydata), 
-              {dir: BaseDirectory.AppData}
-          )
+      try {
+        setData(JSON.parse(await readTextFile(path, {dir: BaseDirectory.AppData})))
       } catch (e) {
-          console.error(e)
-        }
+        await writeTextFile(path, JSON.stringify(data), {dir: BaseDirectory.AppData})
       }
     }
+  
+  const UpdateData = async (new_data) => {
+    await writeTextFile(path, JSON.stringify(new_data),{dir: BaseDirectory.AppData})
+    console.log("saved: ", new_data)
+  }
 
   const checktime = (jsonprayertimeobject) => {
     const today = new Date("2023-03-18T06:06Z");
@@ -85,14 +63,24 @@ function App() {
       if (adthanplayer.paused=== true && prayertime.getTime() === today.getTime())
       {
         //TODO: check for settings -> ensure that settings are followed
-        //TODO: play sperate adthan for fajrs
-        sendNotification('It is ' + prayer + ' time');
-        adthanplayer.play();
+        if (data[prayer] == 0) { 
+          sendNotification('It is ' + prayer + ' time');
+          adthanplayer.play()
+        }
+
+        if (data[prayer] == 1) { 
+          sendNotification('It is ' + prayer + ' time');
+        }
+        
+        if (data[prayer] == 2) { 
+          return
+        }
+        //TODO: play sperate adthan for fajrs     
       }
     }
-  }
-
+  } 
   useEffect(()=>{
+    InitiateData();
     let temp = {};
     requestPerm();
 
@@ -104,15 +92,9 @@ function App() {
       .catch(err => {
       return err
       })
-    const stoplistener = listen('stop', (event) => {
-      console.log("hi")
-      adthanplayer.pause();
-    });
     setInterval(() => {
       checktime(temp)
     }, 1000);
-
-    InitiateData();
 
 	}, [])
 
@@ -122,7 +104,7 @@ function App() {
         <Logo></Logo>
       </div>
       <div className="flex flex-wrap items-center gap-8 justify-center">
-        <SettingCard data={data}></SettingCard>
+        <SettingCard data={data} setData = {setData} update_function = {UpdateData}></SettingCard>
       </div>
       
     </div>
