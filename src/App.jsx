@@ -57,7 +57,7 @@ function App() {
   }
 
   const checktime = (jsonprayertimeobject) => {
-    const today = new Date("2023-03-18T06:06Z");
+    const today = new Date();
     for (const prayer in jsonprayertimeobject) {
       const prayertime =  new Date(today.toISOString().split('T')[0] + 'T' + jsonprayertimeobject[prayer]+':00'+'Z');
       if (adthanplayer.paused=== true && prayertime.getTime() === today.getTime())
