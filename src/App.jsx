@@ -1,4 +1,4 @@
-import { BaseDirectory, readTextFile, writeTextFile } from "@tauri-apps/api/fs";
+import { BaseDirectory, readTextFile, writeTextFile, createDir } from "@tauri-apps/api/fs";
 import { isPermissionGranted, requestPermission, sendNotification } from '@tauri-apps/api/notification';
 import { invoke } from "@tauri-apps/api/tauri";
 import { useEffect, useState } from "react";
@@ -38,10 +38,19 @@ function App() {
 
   const InitiateData = async () => 
     {
+      //first see if dir exists...
+      await createDir('data', { dir: BaseDirectory.AppData, recursive: true });
+
       try {
         setData(JSON.parse(await readTextFile(path, {dir: BaseDirectory.AppData})))
       } catch (e) {
-        await writeTextFile(path, JSON.stringify(data), {dir: BaseDirectory.AppData})
+        try{
+          await writeTextFile(path, JSON.stringify(data), {dir: BaseDirectory.AppData})
+        }
+        catch (e)
+        {
+          console.log(e)
+        }
       }
     }
   
@@ -76,7 +85,6 @@ function App() {
     InitiateData();
     let temp = {};
     requestPerm();
-
     update()
       .then(value => {
         temp = JSON.parse(value);

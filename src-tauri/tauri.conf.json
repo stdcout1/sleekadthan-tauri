@@ -23,7 +23,7 @@
       },
       "fs": {
         "all": true,
-        "scope": ["$APPDATA/*"]
+        "scope": ["$APPDATA/**"]
       },
       "path": {
         "all": true
